@@ -1,0 +1,32 @@
+{
+   "description": "Just myself!",
+   "external_url": "https://laupwing.com",
+   "image": "https://ipfs.filebase.io/ipfs/QmZRj3jyg3zh4vvX3HatWhYRr3x3jADZSw7dbuGGPk3sX8",
+   "name": "Me myself and I",
+   "attributes": [
+      {
+         "trait_type": "Base",
+         "value": "Final Boss"
+      },
+      {
+         "trait_type": "Eyes",
+         "value": "Brown I guess"
+      },
+      {
+         "trait_type": "Mouth",
+         "value": "Serious"
+      },
+      {
+         "trait_type": "Level",
+         "value": 9000
+      },
+      {
+         "trait_type": "Stamina",
+         "value": 99
+      },
+      {
+         "trait_type": "Personality",
+         "value": "What"
+      }
+   ]
+}
