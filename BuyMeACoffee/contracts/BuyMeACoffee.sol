@@ -61,7 +61,7 @@ contract BuyMeACoffee {
    /**
     * @dev retrieve all the memos received and stored on the blockchain
     */
-   function getMemos() public returns(Memo[] memory){
+   function getMemos() public view returns(Memo[] memory){
       return memos;
    }
 }
