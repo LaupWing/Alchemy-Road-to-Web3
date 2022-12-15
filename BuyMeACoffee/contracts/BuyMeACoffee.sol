@@ -4,31 +4,64 @@ pragma solidity ^0.8.9;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-contract Lock {
-   uint public unlockTime;
-   address payable public owner;
+contract BuyMeACoffee {
 
-   event Withdrawal(uint amount, uint when);
+   event NewMemo(
+      address indexed from,
+      uint256 timestamp,
+      string name,
+      string message
+   );
 
-   constructor(uint _unlockTime) payable {
-      require(
-         block.timestamp < _unlockTime,
-         "Unlock time should be in the future"
-      );
+   struct Memo {
+      address from;
+      uint256 timestamp;
+      string name;
+      string message;
+   }
 
-      unlockTime = _unlockTime;
+   Memo[] memos;
+
+   address payable owner;
+
+   constructor() {
       owner = payable(msg.sender);
    }
 
-   function withdraw() public {
-      // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-      // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+   /**
+    * @dev buy a coffee for contract owner
+    * @param _name name of the coffee buyer
+    * @param _message a nice message from the coffee buyer
+    */
+   function buyCoffee(string memory _name, string memory _message) public payable {
+      require(msg.value > 0, "can't buy coffee with 0 eth");
+      // Add the memo to storage!
+      memos.push(Memo(
+         msg.sender,
+         block.timestamp,
+         _name,
+         _message
+      ));
 
-      require(block.timestamp >= unlockTime, "You can't withdraw yet");
-      require(msg.sender == owner, "You aren't the owner");
+      emit NewMemo(
+         msg.sender, 
+         block.timestamp, 
+         _name, 
+         _message
+      );
+   }
 
-      emit Withdrawal(address(this).balance, block.timestamp);
+   /**
+    * @dev send the entire balance in this contract to the owner
+    */
+   function withdrawTips() public{
+      require(owner.send(address(this).balance));
+   }
 
-      owner.transfer(address(this).balance);
+   /**
+    * @dev retrieve all the memos received and stored on the blockchain
+    */
+   function getMemos() public returns(Memo[] memory){
+      return memos;
    }
 }
