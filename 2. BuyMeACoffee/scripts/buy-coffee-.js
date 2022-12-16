@@ -50,9 +50,13 @@ async function main() {
    console.log("== bought coffee ==")
    await printBalances(addresses)
    buyMeACoffee.connect(owner).withdrawTips()
-   
+
    console.log("== withdraw tips ==")
    await printBalances(addresses)
+
+   console.log("== memos ==")
+   const memos = await buyMeACoffee.getMemos()
+   printMemos(memos)
 
 }
 
