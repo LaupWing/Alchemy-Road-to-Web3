@@ -7,7 +7,7 @@
 const hre = require("hardhat")
 
 async function getBalance(address) {
-   const balanceBigInt = await hre.waffle.provider.getBalance(address)
+   const balanceBigInt = await hre.ethers.provider.getBalance(address)
    return hre.ethers.utils.formatEther(balanceBigInt)
 }
 
@@ -30,20 +30,25 @@ function printMemos(memos){
 }
  
 async function main() {
-   const currentTimestampInSeconds = Math.round(Date.now() / 1000)
-   const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60
-   const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS
+   const [owner, tipper, tipper2, tipper3] = await hre.ethers.getSigners() 
 
-   const lockedAmount = hre.ethers.utils.parseEther("1")
+   const BuyMeACoffee = await hre.ethers.getContractFactory("BuyMeACoffee")
+   const buyMeACoffee = await BuyMeACoffee.deploy()
+   await buyMeACoffee.deployed()
 
-   const Lock = await hre.ethers.getContractFactory("Lock")
-   const lock = await Lock.deploy(unlockTime, { value: lockedAmount })
+   console.log("BuyMeACoffe deployed to ", buyMeACoffee.address)
+   const addresses = [owner.address, tipper.address, buyMeACoffee.address]
+   console.log("== start ==")
+   await printBalances(addresses)
+   const tip = {
+      value: hre.ethers.utils.parseEther("1")
+   }
+   buyMeACoffee.connect(tipper).buyCoffee("Hau", "Jij bent gay", tip)
+   buyMeACoffee.connect(tipper2).buyCoffee("Jim", "<3", tip)
+   buyMeACoffee.connect(tipper3).buyCoffee("David", "Homo", tip)
 
-   await lock.deployed()
-
-   console.log(
-      `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-   )
+   console.log("== start ==")
+   await printBalances(addresses)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
