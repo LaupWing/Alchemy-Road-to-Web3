@@ -46,9 +46,14 @@ async function main() {
    buyMeACoffee.connect(tipper).buyCoffee("Hau", "Jij bent gay", tip)
    buyMeACoffee.connect(tipper2).buyCoffee("Jim", "<3", tip)
    buyMeACoffee.connect(tipper3).buyCoffee("David", "Homo", tip)
-
-   console.log("== start ==")
+   
+   console.log("== bought coffee ==")
    await printBalances(addresses)
+   buyMeACoffee.connect(owner).withdrawTips()
+   
+   console.log("== withdraw tips ==")
+   await printBalances(addresses)
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
