@@ -28,9 +28,16 @@ export default function Home() {
    const isWalletConnected = async () => {
       try{
          const {ethereum} = window
-
-      }catch(e){
+         const accounts = await ethereum?.request({method: "eth_accounts"}) as string[]
          
+         if(accounts!.length > 0) {
+            const account = accounts[0]
+            console.log(`Wallet is connected ${account}`)
+         } else {
+            console.warn("Make sure Metamask is connected!")
+         }
+      }catch(e){
+         console.error(`Error: ${e}`)
       }
    }
 
