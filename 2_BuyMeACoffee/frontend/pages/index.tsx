@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {} from "ethers"
+import {ethers} from "ethers"
 import { MetaMaskInpageProvider } from "@metamask/providers";
 
 declare global {
@@ -54,6 +54,18 @@ export default function Home() {
          })
          setCurrentAccount(accounts![0] as string)
       }catch(e) {
+         console.error(e)
+      }
+   }
+
+   const buyCoffee = async () => {
+      try{
+         const {ethereum} = window
+
+         if(ethereum) {
+            const provider = new ethers.providers.Web3Provider(ethereum as any, "any")
+         }
+      }catch(e){
          console.error(e)
       }
    }
