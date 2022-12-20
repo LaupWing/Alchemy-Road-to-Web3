@@ -64,6 +64,14 @@ export default function Home() {
 
          if(ethereum) {
             const provider = new ethers.providers.Web3Provider(ethereum as any, "any")
+            const signer = provider.getSigner()
+            const buyMeACoffee = new ethers.Contract(
+               contractAddress,
+               contractAbi,
+               signer
+            )
+            console.log("Buying your coffee")
+            
          }
       }catch(e){
          console.error(e)
