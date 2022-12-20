@@ -71,7 +71,21 @@ export default function Home() {
                signer
             )
             console.log("Buying your coffee")
+            const coffeeTxn = await buyMeACoffee.buyCoffee(
+               name ? name: "anon",
+               message ? message : "Enjoy your coffee!",
+               {
+                  value: ethers.utils.parseEther("0.001")
+               }
+            )
+
+            await coffeeTxn.wait()
             
+            console.log("Mined -->", coffeeTxn.hash)
+            console.log("Coffee purchased")
+
+            setName("")
+            setMessage("")
          }
       }catch(e){
          console.error(e)
