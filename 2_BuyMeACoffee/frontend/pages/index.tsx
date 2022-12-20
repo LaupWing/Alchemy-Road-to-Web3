@@ -67,7 +67,7 @@ export default function Home() {
             const signer = provider.getSigner()
             const buyMeACoffee = new ethers.Contract(
                contractAddress,
-               contractAbi,
+               contractAbi as any,
                signer
             )
             console.log("Buying your coffee")
@@ -89,6 +89,31 @@ export default function Home() {
          }
       }catch(e){
          console.error(e)
+      }
+   }
+
+   const getMemos = async () =>{
+      try{
+         const { ethereum } = window
+
+         if(ethereum){
+            const provider = new ethers.providers.Web3Provider(ethereum as any)
+            const signer = provider.getSigner()
+            const buyMeACoffee = new ethers.Contract(
+               contractAddress,
+               contractAbi as any,
+               signer
+            )
+
+            console.log("Fetching memos from the blockchain")
+            const memos = await buyMeACoffee.getMemos()
+            console.log("Fetched!")
+            setMemos(memos)
+         }else {
+            console.error("Metamask is not connected!")
+         }
+      }catch(err){
+         console.error(err)
       }
    }
 
