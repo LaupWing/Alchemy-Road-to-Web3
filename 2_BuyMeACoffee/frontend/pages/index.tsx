@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {ethers} from "ethers"
 import { MetaMaskInpageProvider } from "@metamask/providers";
 
@@ -15,7 +15,7 @@ export default function Home() {
    const [currentAccount, setCurrentAccount] = useState("")
    const [name, setName] = useState("")
    const [message, setMessage] = useState("")
-   const [memo, setMemos] = useState("")
+   const [memo, setMemos] = useState<any[]>([])
 
    const onNameChange = (event: any) =>{
       setName(event.target.name)
@@ -116,6 +116,45 @@ export default function Home() {
          console.error(err)
       }
    }
+
+   useEffect(()=>{
+      let buyMeACoffee:any
+      isWalletConnected()
+      getMemos()
+
+      const onNewMemo = (from:string, timestamp:number, name:string, message:string) => {
+         setMemos((prevState) => [
+            ...prevState,
+            {
+               address: from,
+               timestamp: new Date(timestamp * 1000),
+               message,
+               name
+            }
+         ])
+      }
+
+      const {ethereum} = window
+
+      if(ethereum){
+         const provider = new ethers.providers.Web3Provider(ethereum as any)
+         const signer = provider.getSigner()
+
+         buyMeACoffee = new ethers.Contract(
+            contractAddress,
+            contractAbi as string,
+            signer
+         )
+
+         buyMeACoffee.on("NewMemo", onNewMemo)
+      }
+
+      return () => {
+         if(buyMeACoffee){
+            buyMeACoffee.off("NewMemo", onNewMemo)
+         }
+      }
+   }, [])
 
    return (
       <>
