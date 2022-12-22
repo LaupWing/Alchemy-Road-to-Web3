@@ -41,4 +41,19 @@ contract ChainBattles is ERC721URIStorage {
       uint256 levels = tokenIdToLevels[tokenId];
       return levels.toString();
    }
+
+   function getTokenURI(uint256 tokenId) public view returns (string memory){
+      string memory dataURI = string.concat(
+         '{',
+            '"name": "Chain Wars #', tokenId.toString(), '",',
+            '"description": "Battles on chain",',
+            '"image": "', generateCharater(tokenId), '"',
+         '}' 
+      );
+
+      return string.concat(
+         "data:application/json;base64,",
+         Base64.encode(bytes(dataURI))
+      );
+   }
 }
