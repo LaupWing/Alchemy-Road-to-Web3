@@ -6,7 +6,13 @@ const Home: NextPage = () => {
    const [collectionAddress, setCollectionAddress] = useState("")
 
    const fetchNft = async () => {
-      
+      let nfts
+      console.log("Fetching nfts")
+      if(!collectionAddress.length){
+         nfts = fetch()
+      }else{
+
+      }
    }
 
    return (
