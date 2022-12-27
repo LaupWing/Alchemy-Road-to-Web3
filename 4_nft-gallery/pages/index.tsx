@@ -5,6 +5,10 @@ const Home: NextPage = () => {
    const [walletAddres, setWalletAddress] = useState("")
    const [collectionAddress, setCollectionAddress] = useState("")
 
+   const fetchNft = async () => {
+      
+   }
+
    return (
       <div className="flex min-h-screen flex-col items-center justify-center py-2">
          <div>
@@ -27,7 +31,9 @@ const Home: NextPage = () => {
                   id="checkbox" 
                />
             </label>
-            <button>Let's go!</button>
+            <button onClick={() => {
+
+            }}>Let's go!</button>
          </div>
       </div>
    )
