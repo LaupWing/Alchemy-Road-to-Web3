@@ -11,6 +11,7 @@ const Home: NextPage = () => {
                type="text" 
                onChange={e => setWallet(e.target.value)}
                placeholder="Add your wallet address"
+               value={wallet}
             />
             <input 
                type="text" 
