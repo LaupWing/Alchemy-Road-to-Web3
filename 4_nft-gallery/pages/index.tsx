@@ -2,20 +2,23 @@ import type { NextPage } from "next"
 import { useState } from "react"
 
 const Home: NextPage = () => {
-   const [wallet, setWallet] = useState("")
+   const [walletAddres, setWalletAddress] = useState("")
+   const [collectionAddress, setCollectionAddress] = useState("")
 
    return (
       <div className="flex min-h-screen flex-col items-center justify-center py-2">
          <div>
             <input 
                type="text" 
-               onChange={e => setWallet(e.target.value)}
+               onChange={e => setWalletAddress(e.target.value)}
                placeholder="Add your wallet address"
-               value={wallet}
+               value={walletAddres}
             />
             <input 
                type="text" 
+               onChange={e => setCollectionAddress(e.target.value)}
                placeholder="Add your collection address"
+               value={collectionAddress}
             />
             <label htmlFor="checkbox">
                <input 
