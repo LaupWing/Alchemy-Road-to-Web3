@@ -8,8 +8,15 @@ const Home: NextPage = () => {
    const fetchNft = async () => {
       let nfts
       console.log("Fetching nfts")
+      const api_key = "A8A1Oo_UTB9IN5oNHfAc2tAxdR4UVwfM"
+      const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTs/`
+
       if(!collectionAddress.length){
-         nfts = fetch()
+         const requestOptions = {
+            method: "GET"
+         }
+         const fetchUrl = `${baseURL}?owner=${walletAddres}`
+         nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
       }else{
 
       }
