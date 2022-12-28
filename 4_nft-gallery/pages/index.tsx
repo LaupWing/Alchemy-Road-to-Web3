@@ -2,31 +2,45 @@ import type { NextPage } from "next"
 import { useState } from "react"
 
 const Home: NextPage = () => {
-   const [walletAddres, setWalletAddress] = useState("")
+   const [walletAddress, setWalletAddress] = useState("")
    const [collectionAddress, setCollectionAddress] = useState("")
    const [nfts, setNfts] = useState([])
+   const [fetchForCollection, setFetchForCollection] = useState(false)
 
+   const api_key = "A8A1Oo_UTB9IN5oNHfAc2tAxdR4UVwfM"
+   const requestOptions = {
+      method: "GET"
+   }
+   
    const fetchNfts = async () => {
       let nfts
       console.log("Fetching nfts")
-      const api_key = "A8A1Oo_UTB9IN5oNHfAc2tAxdR4UVwfM"
       const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTs/`
-
-      const requestOptions = {
-         method: "GET"
-      }
-
+      
+      
       if(!collectionAddress.length){
-         const fetchUrl = `${baseURL}?owner=${walletAddres}`
+         const fetchUrl = `${baseURL}?owner=${walletAddress}`
          nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
       }else{
          console.log("Fetching nfts for collection owned by address")
-         const fetchUrl = `${baseURL}?owner=${walletAddres}&contractAddresses%5B%5D=${collectionAddress}`
+         const fetchUrl = `${baseURL}?owner=${walletAddress}&contractAddresses%5B%5D=${collectionAddress}`
          nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
       }
-
+      
       if(nfts){
          setNfts(nfts.ownedNfts)
+      }
+   }
+   
+   const fetchNftsForCollection = async () =>{
+      if(collectionAddress.length){
+         const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTsForCollection/`
+         const fetchUrl = `${baseURL}?contractAddress=${collectionAddress}&withMetadata=true`
+         const nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
+
+         if(nfts){
+            console.log("NFTS in collection", nfts)
+         }
       }
    }
 
@@ -37,7 +51,7 @@ const Home: NextPage = () => {
                type="text" 
                onChange={e => setWalletAddress(e.target.value)}
                placeholder="Add your wallet address"
-               value={walletAddres}
+               value={walletAddress}
             />
             <input 
                type="text" 
@@ -50,10 +64,16 @@ const Home: NextPage = () => {
                   type="checkbox" 
                   name="checkbox" 
                   id="checkbox" 
+                  onChange={e => setFetchForCollection(e.target.checked)}
                />
+               Fetch for collection
             </label>
             <button onClick={() => {
-               fetchNfts()
+               if(fetchForCollection){
+                  fetchNftsForCollection()
+               }else{
+                  fetchNfts()
+               }
             }}>Let's go!</button>
          </div>
       </div>
