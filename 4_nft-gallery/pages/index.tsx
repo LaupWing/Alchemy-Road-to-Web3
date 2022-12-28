@@ -4,6 +4,7 @@ import { useState } from "react"
 const Home: NextPage = () => {
    const [walletAddres, setWalletAddress] = useState("")
    const [collectionAddress, setCollectionAddress] = useState("")
+   const [nfts, setNfts] = useState([])
 
    const fetchNft = async () => {
       let nfts
@@ -11,14 +12,21 @@ const Home: NextPage = () => {
       const api_key = "A8A1Oo_UTB9IN5oNHfAc2tAxdR4UVwfM"
       const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${api_key}/getNFTs/`
 
+      const requestOptions = {
+         method: "GET"
+      }
+
       if(!collectionAddress.length){
-         const requestOptions = {
-            method: "GET"
-         }
          const fetchUrl = `${baseURL}?owner=${walletAddres}`
          nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
       }else{
+         console.log("Fetching nfts for collection owned by address")
+         const fetchUrl = `${baseURL}?owner=${walletAddres}&contractAddresses%5B%5D=${collectionAddress}`
+         nfts = await fetch(fetchUrl, requestOptions).then(data => data.json())
+      }
 
+      if(nfts){
+         setNfts(nfts)
       }
    }
 
