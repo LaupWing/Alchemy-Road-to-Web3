@@ -6,7 +6,7 @@ const Home: NextPage = () => {
    const [collectionAddress, setCollectionAddress] = useState("")
    const [nfts, setNfts] = useState([])
 
-   const fetchNft = async () => {
+   const fetchNfts = async () => {
       let nfts
       console.log("Fetching nfts")
       const api_key = "A8A1Oo_UTB9IN5oNHfAc2tAxdR4UVwfM"
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       }
 
       if(nfts){
-         setNfts(nfts)
+         setNfts(nfts.ownedNfts)
       }
    }
 
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
                />
             </label>
             <button onClick={() => {
-
+               fetchNfts()
             }}>Let's go!</button>
          </div>
       </div>
