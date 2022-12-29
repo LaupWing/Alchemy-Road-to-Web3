@@ -40,6 +40,7 @@ const Home: NextPage = () => {
 
          if(nfts){
             console.log("NFTS in collection", nfts)
+            setNfts(nfts.nfts)
          }
       }
    }
