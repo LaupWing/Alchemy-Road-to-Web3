@@ -1,5 +1,6 @@
 import type { NextPage } from "next"
 import { useState } from "react"
+import NftCard from "../components/NftCard"
 
 const Home: NextPage = () => {
    const [walletAddress, setWalletAddress] = useState("")
@@ -76,6 +77,11 @@ const Home: NextPage = () => {
                   fetchNfts()
                }
             }}>Let's go!</button>
+         </div>
+         <div>
+            {nfts.map((nft:any)=> (
+               <NftCard nft={nft}/>
+            ))}
          </div>
       </div>
    )
